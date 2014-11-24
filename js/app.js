@@ -21,11 +21,11 @@ $(document).ready(function() {
     var infowindow = new google.maps.InfoWindow();
     var markers = [];
 
-    // reference seattel cams json file
+    // reference Seattle cams json file
     $.getJSON('http://data.seattle.gov/resource/65fc-btcc.json')
         .done(function(data) {
             cams = data;
-            // sets unqiue icon
+            // sets unique icon
             var img = 'img/cone.png';
             data.forEach(function(locate) {
                 // creates marker with default position
