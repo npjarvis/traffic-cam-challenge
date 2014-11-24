@@ -27,7 +27,7 @@ $(document).ready(function() {
                         lng: Number(locate.location.longitude)
                     },
                     map: map,
-                    img: locate.imgurl.url,
+                    img: locate.imageurl.url,
                     label: locate.cameralabel
                 });
                 markers.push(marker);
