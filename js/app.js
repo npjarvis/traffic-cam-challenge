@@ -23,6 +23,7 @@ $(document).ready(function() {
     $.getJSON('http://data.seattle.gov/resource/65fc-btcc.json')
         .done(function(data) {
             cams = data;
+            var img = 'img/cone.png';
             data.forEach(function(locate) {
                 var marker = new google.maps.Marker({
                     position: {
@@ -30,7 +31,8 @@ $(document).ready(function() {
                         lng: Number(locate.location.longitude)
                     },
                     map: map,
-                    image: locate.imageurl.url
+                    image: locate.imageurl.url,
+                    icon: img
                 });
                 markers.push(marker);
                 google.maps.event.addListener(marker, 'click', function(){
