@@ -5,6 +5,7 @@
 
 
 $(document).ready(function() {
+    // reference div element from html, set starting center
     var mapElem = document.getElementById('map');
     var center = {
         lat: 47.6,
@@ -20,11 +21,14 @@ $(document).ready(function() {
     var infowindow = new google.maps.InfoWindow();
     var markers = [];
 
+    // reference seattel cams json file
     $.getJSON('http://data.seattle.gov/resource/65fc-btcc.json')
         .done(function(data) {
             cams = data;
+            // sets unqiue icon
             var img = 'img/cone.png';
             data.forEach(function(locate) {
+                // creates marker with default position
                 var marker = new google.maps.Marker({
                     position: {
                         lat: Number(locate.location.latitude),
@@ -35,6 +39,7 @@ $(document).ready(function() {
                     icon: img
                 });
                 markers.push(marker);
+                // adds seattle camera images/markers
                 google.maps.event.addListener(marker, 'click', function(){
                     map.panTo(marker.getPosition());
                     var htmlcode = '<h2>' + locate.cameralabel + '</h2>';
@@ -47,6 +52,7 @@ $(document).ready(function() {
                     infowindow.close();
                 });
                 var searchVal;
+                // implements search function
                 $('#search').bind("search keyup", function() {
                     searchVal = $('#search').val().toLowerCase();
                     var camera = locate.cameralabel.toLowerCase();
@@ -58,6 +64,7 @@ $(document).ready(function() {
                 });
             })
         })
+        // alerts connection error
         .fail(function(err){
             alert(err);
         })
