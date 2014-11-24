@@ -15,6 +15,35 @@ $(document).ready(function() {
         center: center,
         zoom: 12
     });
+
+    var markers = [];
+
+    $.getJSON('http://data.seattle.gov/resource/65fc-btcc.json')
+        .done(function(data) {
+            data.forEach(function(locate) {
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: Number(locate.location.latitude),
+                        lng: Number(locate.location.longitude)
+                    },
+                    map: map,
+                    img: locate.imgurl.url,
+                    label: locate.cameralabel
+                });
+                markers.push(marker);
+                google.maps.event.addListener(marker, 'click', function(){
+                var html = '<img src=""' + marker.img + '/>';
+                infowindow.setContent(html);
+                infowindow.open(map, this);
+                });
+            })
+        })
+        .fail(function(err){
+            alert(err);
+        })
+        .always(function(){
+
+        })
 });
 
 //put your code here to create the map, fetch the list of traffic cameras
