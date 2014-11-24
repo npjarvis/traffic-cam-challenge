@@ -42,11 +42,13 @@ $(document).ready(function() {
                     marker.setAnimation(google.maps.Animation.DROP);
                 });
                 google.maps.event.addListener(map, 'click', function() {
-                    infoWindow.close();
+                    infowindow.close();
                 });
+                var searchVal;
                 $('#search').bind("search keyup", function() {
-                    var camera = locate.cameralabel.toLowerCase().value;
-                    if (camera< 0) {
+                    searchVal = $('#search').val().toLowerCase();
+                    var camera = locate.cameralabel.toLowerCase();
+                    if (camera.indexOf(searchVal)< 0) {
                         marker.setMap(null);
                     } else {
                         marker.setMap(map);
