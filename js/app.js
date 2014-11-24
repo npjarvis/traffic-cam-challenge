@@ -16,10 +16,13 @@ $(document).ready(function() {
         zoom: 12
     });
 
+    var cams;
+    var infowindow = new google.maps.InfoWindow();
     var markers = [];
 
     $.getJSON('http://data.seattle.gov/resource/65fc-btcc.json')
         .done(function(data) {
+            cams = data;
             data.forEach(function(locate) {
                 var marker = new google.maps.Marker({
                     position: {
@@ -27,14 +30,27 @@ $(document).ready(function() {
                         lng: Number(locate.location.longitude)
                     },
                     map: map,
-                    img: locate.imageurl.url,
-                    label: locate.cameralabel
+                    image: locate.imageurl.url
                 });
                 markers.push(marker);
                 google.maps.event.addListener(marker, 'click', function(){
-                var html = '<img src=""' + marker.img + '/>';
-                infowindow.setContent(html);
-                infowindow.open(map, this);
+                    map.panTo(marker.getPosition());
+                    var htmlcode = '<h2>' + locate.cameralabel + '</h2>';
+                    htmlcode += '<img src="' + marker.image + '">';
+                    infowindow.setContent(htmlcode);
+                    infowindow.open(map, this);
+                    marker.setAnimation(google.maps.Animation.DROP);
+                });
+                google.maps.event.addListener(map, 'click', function() {
+                    infoWindow.close();
+                });
+                $('#search').bind("search keyup", function() {
+                    var camera = locate.cameralabel.toLowerCase().value;
+                    if (camera< 0) {
+                        marker.setMap(null);
+                    } else {
+                        marker.setMap(map);
+                    }
                 });
             })
         })
@@ -43,7 +59,9 @@ $(document).ready(function() {
         })
         .always(function(){
 
-        })
+
+        });
+
 });
 
 //put your code here to create the map, fetch the list of traffic cameras
